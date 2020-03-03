@@ -2,18 +2,17 @@
 
 namespace backend\controllers;
 
-use backend\models\Comment;
 use Yii;
-use backend\models\Movie;
-use backend\models\MovieSearch;
+use backend\models\Comment;
+use backend\models\CommentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MovieController implements the CRUD actions for Movie model.
+ * CommentController implements the CRUD actions for Comment model.
  */
-class MovieController extends Controller
+class CommentController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +30,12 @@ class MovieController extends Controller
     }
 
     /**
-     * Lists all Movie models.
+     * Lists all Comment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MovieSearch();
+        $searchModel = new CommentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,30 +45,26 @@ class MovieController extends Controller
     }
 
     /**
-     * Displays a single Movie model.
+     * Displays a single Comment model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $comments = Comment::findAll(
-            ['instance_record_id' => $id, 'instance_name' => Comment::INSTANCE_TABLE_MOVIE]
-        );
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'comments' => $comments,
         ]);
     }
 
     /**
-     * Creates a new Movie model.
+     * Creates a new Comment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Movie();
+        $model = new Comment();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -81,7 +76,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Updates an existing Movie model.
+     * Updates an existing Comment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -101,7 +96,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Deletes an existing Movie model.
+     * Deletes an existing Comment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,15 +110,15 @@ class MovieController extends Controller
     }
 
     /**
-     * Finds the Movie model based on its primary key value.
+     * Finds the Comment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Movie the loaded model
+     * @return Comment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Movie::findOne($id)) !== null) {
+        if (($model = Comment::findOne($id)) !== null) {
             return $model;
         }
 

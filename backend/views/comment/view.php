@@ -4,15 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Movie */
-/* @var $comments backend\models\Comment[] */
+/* @var $model backend\models\Comment */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Movies', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="movie-view">
+<div class="comment-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -31,15 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
-            'number_of_likes',
-            'number_of_views',
-            'year',
+            'user_id',
+            'text:ntext',
+            'instance_name',
+            'instance_record_id',
+            'created_at',
+            'parent_id',
         ],
     ]) ?>
-    <?php
-    foreach ($comments as $comment) {
-        echo $comment->text." | Author of comment: ";
-    }
-    ?>
+
 </div>
