@@ -39,6 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'year',
         ],
     ]) ?>
+
+
+
     <div class="comment-form">
         <p>
             <?php
@@ -51,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
             <?= $form->field($comment, 'text')->textarea(['rows' => 3]) ?>
         </p>
+
         <p>
             <?= Html::submitButton('Add comment', ['class' => 'btn btn-class']) ?>
             <?php
@@ -58,18 +62,34 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </p>
     </div>
-
+    </br>
 
 
     <?php
-    foreach ($comments as $comment) {
-        echo $comment->text.". | Author of comment: ";
-        echo $comment->user->username;
-        echo ". | Date of comment: ";
-        echo $comment->created_at;
-        echo "</br>";
-    }
+        function buildComment($comments, $currentComment, $level)
+        {
+            echo "<div style=\"padding-left: {$level}px; margin-top: 10px\">
+                <div style=\"background-color: whitesmoke; width: 400px;box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 10px;\">
+                <b>Date of create: </b>$currentComment->created_at</br>
+                <b>Comment: </b>$currentComment->text</br>
+                </div>
+            </div>";
+            foreach ($comments as $comment)
+            {
+
+                if($comment->parent_id === $currentComment->id)
+                {
+                    buildComment($comments, $comment, $level+20);
+                }
+            }
+        }
+        buildComment($comments, $comments[0], 10);
     ?>
+
+
+
+
 
 
 
