@@ -13,7 +13,6 @@ $comment = new Comment();
 
 $arr_col = count($comments);
 $arr = array();
-$curComm =
 $level_array = array();
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Movies', 'url' => ['index']];
@@ -84,25 +83,34 @@ $this->params['breadcrumbs'][] = $this->title;
     print_r($arr);
 
 
-       function buildComment($comments, $currentComment, $level)
+
+       function buildComment_2($comments, $currentIndex, $level)
        {
-              echo Widget_for_comments::widget(['level' => $level, 'crated_at' => $currentComment->created_at,
-                  'text' => $currentComment->text]);
-            foreach ($comments as $comment)
+            if ($currentIndex >= count($comments))
             {
-                if($comment->parent_id === $currentComment->id)
+                return;
+            }
+
+            $currentComment = $comments[$currentIndex];
+
+            if ($currentComment->parent_id === null)
+            {
+                echo Widget_for_comments::widget(['level' => $level, 'crated_at' => $currentComment->created_at,
+                    'text' => $currentComment->text]);
+            }
+            $children = $currentComment->comments;
+
+            foreach($children as $key => $comment)
+            {
+                if ($comment->parent_id === $currentComment->id)
                 {
-                    buildComment($comments, $comment, $level+20);
+                    echo Widget_for_comments::widget(['level' => $level+20, 'crated_at' => $comment->created_at,
+                        'text' => $comment->text]);
+                    buildComment_2($children, 0, $level+20);
                 }
             }
+            buildComment_2($comments, $currentIndex+1, $level);
        }
-       buildComment($comments, $comments[0], 10);
+       buildComment_2($comments, 0, 10);
     ?>
-
-
-
-
-
-
-
 </div>

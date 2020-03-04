@@ -53,9 +53,7 @@ class MovieController extends Controller
      */
     public function actionView($id)
     {
-        $comments = Comment::findAll(
-            ['instance_record_id' => $id, 'instance_name' => Comment::INSTANCE_TABLE_MOVIE]
-        );
+        $comments = Comment::find()->where(['parent_id' => null])->orderBy('created_at')-> all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'comments' => $comments,
