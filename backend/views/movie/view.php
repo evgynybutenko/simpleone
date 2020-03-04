@@ -4,12 +4,17 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use backend\models\Comment;
+use backend\components\Widget_for_comments;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Movie */
 /* @var $comments backend\models\Comment[] */
 
 $comment = new Comment();
 
+$arr_col = count($comments);
+$arr = array();
+$curComm =
+$level_array = array();
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Movies', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -66,25 +71,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php
-        function buildComment($comments, $currentComment, $level)
-        {
-            echo "<div style=\"padding-left: {$level}px; margin-top: 10px\">
-                <div style=\"background-color: whitesmoke; width: 400px;box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
-    padding: 10px;\">
-                <b>Date of create: </b>$currentComment->created_at</br>
-                <b>Comment: </b>$currentComment->text</br>
-                </div>
-            </div>";
+    echo $arr_col;
+    echo "<br>";
+    for($i = 1; $i <= $arr_col; $i++)
+    {
+        $arr[$i] = $comments[$i - 1]->parent_id;
+    }
+    for($i = 1; $i <= $arr_col; $i++)
+    {
+        $level_array[$i] = 10 * $i;
+    }
+    print_r($arr);
+
+
+       function buildComment($comments, $currentComment, $level)
+       {
+              echo Widget_for_comments::widget(['level' => $level, 'crated_at' => $currentComment->created_at,
+                  'text' => $currentComment->text]);
             foreach ($comments as $comment)
             {
-
                 if($comment->parent_id === $currentComment->id)
                 {
                     buildComment($comments, $comment, $level+20);
                 }
             }
-        }
-        buildComment($comments, $comments[0], 10);
+       }
+       buildComment($comments, $comments[0], 10);
     ?>
 
 
