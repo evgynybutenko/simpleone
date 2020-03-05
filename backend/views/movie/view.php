@@ -64,30 +64,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </p>
     </div>
-    </br>
 
 
     <?php
 
+    echo Widget_for_comments::widget(['comments' => $comments,
+        'comment' => $comment]);
 
-    function buildComment($comments, $currentComment, $level)
-    {
-        echo Widget_for_comments::widget(['level' => $level, 'crated_at' => $currentComment->created_at,
-            'text' => $currentComment->text]);
-
-        foreach ($comments as $comment) {
-            if ($comment->parent_id === $currentComment->id)
-            {
-                buildComment($comments, $comment, $level+20);
-            }
-        }
-    }
-
-    foreach ($comments as $comment) {
-        if ($comment->parent_id === null)
-        {
-            buildComment($comments, $comment, 10);
-        }
-    }
     ?>
 </div>
