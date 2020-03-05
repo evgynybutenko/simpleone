@@ -28,7 +28,22 @@ class CommentController extends Controller
             ],
         ];
     }
+    public function actionAdd()
+    {
+        $comment = new Comment();
 
+        //$comment->instance_name = 'movie';
+        if ($comment->load(Yii::$app->request->post()))
+        {
+            $comment->save();
+            Yii::$app->session->setFlash('success', 'Comment added!');
+            return $this->redirect(Yii::$app->request->referrer);
+        }else
+        {
+            Yii::$app->session->setFlash('error', 'Cant save comment!');
+        }
+        return $this->redirect(Yii::$app->request->referrer);
+    }
     /**
      * Lists all Comment models.
      * @return mixed

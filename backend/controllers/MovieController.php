@@ -30,6 +30,9 @@ class MovieController extends Controller
         ];
     }
 
+
+
+
     /**
      * Lists all Movie models.
      * @return mixed
@@ -53,7 +56,10 @@ class MovieController extends Controller
      */
     public function actionView($id)
     {
-        $comments = Comment::find()->where(['parent_id' => null])->orderBy('created_at')-> all();
+        $comments = Comment::findAll([
+            'instance_name' => Comment::INSTANCE_TABLE_MOVIE,
+            'instance_record_id' => $id,
+        ]);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'comments' => $comments,
